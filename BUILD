@@ -24,6 +24,8 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
         "@com_github_jeongukjae_tfs_proto//:tensorflow_serving_apis_go_proto",
         "@com_github_jeongukjae_tfs_proto//:tensorflow_core_framework_go_proto",
         "@com_github_jeongukjae_tfs_proto//:tensorflow_core_example_go_proto",

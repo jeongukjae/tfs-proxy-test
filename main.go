@@ -6,6 +6,8 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	tfs_api_pb "github.com/tensorflow/serving/tensorflow_serving/apis"
 )
 
@@ -26,11 +28,17 @@ func main() {
 }
 
 func handleTfsRequest(srv interface{}, stream grpc.ServerStream) error {
+	fullMethodName, ok := grpc.MethodFromServerStream(stream)
+	if !ok {
+		return status.Errorf(codes.Internal, "lowLevelServerStream not exists in context")
+	}
+	log.Println(fullMethodName)
+
 	var requestPb tfs_api_pb.PredictRequest
 	err := stream.RecvMsg(&requestPb)
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(requestPb)
+	log.Println(srv, requestPb)
 	return nil
 }
